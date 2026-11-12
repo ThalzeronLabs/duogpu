@@ -4,7 +4,7 @@ using DuoGPU.Core;
 namespace DuoGPU.UI;
 
 /// <summary>Every visible text, in English and Brazilian Portuguese. Follows Windows unless the config says otherwise.</summary>
-public static class S
+public static partial class S
 {
     static bool pt = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "pt";
 

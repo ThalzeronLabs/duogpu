@@ -53,6 +53,31 @@ O ícone da bandeja: <img src="docs/images/icons.pt-BR.png" height="22" alt="Íc
 Essas imagens são desenhadas pelo próprio código do painel (`DuoGPU.exe render docs/images`). O Modo IA usa os valores
 ao vivo do meu PC; o Modo Jogo e o alerta usam valores medidos no mesmo PC.
 
+## A configuração guiada
+
+Na primeira vez que você abre o DuoGPU, uma configuração de sete passos guia você por tudo. Cada passo diz o que vai
+fazer, por quê e quanto tempo leva, antes de você clicar em qualquer coisa.
+
+| 1. Boas-vindas | 3. As entradas | 5. Testar um caminho | 7. Tudo pronto |
+|---|---|---|---|
+| <img src="docs/images/setup-1.pt-BR.png" width="230" alt="Boas-vindas: o que o DuoGPU faz e por que nada é permanente"> | <img src="docs/images/setup-3.pt-BR.png" width="230" alt="As entradas: o monitor diz qual entrada mostra; você escolhe a outra"> | <img src="docs/images/setup-5.pt-BR.png" width="230" alt="Testar o caminho do Modo IA: uma troca de verdade e depois o maior Hz"> | <img src="docs/images/setup-7.pt-BR.png" width="230" alt="Tudo pronto: como o ícone funciona e o que ficou salvo"> |
+
+Os outros passos mostram o que o DuoGPU achou (as suas placas, o monitor com dois cabos), as suas preferências (a
+escala, iniciar com o Windows, o idioma) e o teste do caminho do Modo Jogo.
+
+## Quanto tempo cada coisa leva
+
+| Etapa | Tempo |
+|---|---|
+| Uma troca | uns 5 s |
+| Se ninguém confirmar (tela preta) | 15 s, e ele volta sozinho |
+| O teste de Hz de um caminho | uns 1 a 2 min (cada degrau até 20 s) |
+| A primeira configuração inteira | uns 3 a 5 min |
+| Uma conferência do guarda | alguns milissegundos, a cada 5 s |
+
+**Tudo em detalhe** (o que acontece em cada modo, cada passo de uma troca, cada teste e por quê, onde ficam os arquivos):
+[docs/how-it-works.pt-BR.md](docs/how-it-works.pt-BR.md).
+
 ## Como funciona
 
 <p align="center">
@@ -104,7 +129,7 @@ o jeito mais rápido de aumentar a lista.
 3. A configuração abre sozinha:
    - ela mostra o monitor que achou nas duas placas e escolhe para a IA a placa com mais VRAM;
    - ela lê pelo DDC/CI a entrada que está na tela; você escolhe a entrada onde está o cabo da outra placa;
-   - clique em **Salvar e testar uma troca** e, uma vez em cada modo, em **Achar o maior Hz deste caminho**.
+   - os passos 5 e 6 trocam de verdade para cada modo e acham o maior Hz de cada caminho, com você confirmando.
 4. O ícone fica na bandeja (a setinha `^` perto do relógio). Arraste ele para fora para deixar sempre à vista.
 
 ## Linha de comando

@@ -133,7 +133,7 @@ public sealed class TrayApp
             setup.Activate();
             return;
         }
-        setup = new SetupWindow(this, Detect.Propose(), Config);
+        setup = new SetupWindow(this, Detect.Propose(), Config, firstRun: !Config.IsComplete);
         setup.Closed += (_, _) => setup = null;
         setup.Show();
         setup.Activate();

@@ -60,6 +60,7 @@ public sealed class Switcher(Config cfg)
     /// <summary>Stages and applies one switch, with no confirmation. Runs on a worker thread.</summary>
     SwitchResult Apply(Mode mode)
     {
+        var clock = System.Diagnostics.Stopwatch.StartNew();
         var topo = Topology.Read();
         var monitor = cfg.SharedMonitor!;
         var targetGpu = cfg.GpuFor(mode);
@@ -89,7 +90,8 @@ public sealed class Switcher(Config cfg)
 
         // 2 and 3. the new output on, the old one off, applied together
         int width = place?.Width ?? 0, height = place?.Height ?? 0;
-        var mode2 = Refresh.Best(Gdi.Modes(newOut.GdiName), width, height, cfg.MaxHzFor(targetGpu));
+        // a path nobody has tested yet starts at the safe 60 Hz; calibration raises it with the person watching
+        var mode2 = Refresh.Best(Gdi.Modes(newOut.GdiName), width, height, cfg.MaxHzFor(targetGpu) ?? Refresh.SafeHz);
         if (mode2 == null) return new(false, Mode.Unknown, "no-mode");
         int x = place?.X ?? 0, y = place?.Y ?? 0;
         int rc = Gdi.Stage(newOut.GdiName, x, y, mode2.Width, mode2.Height, mode2.Hz, primary);
@@ -133,12 +135,15 @@ public sealed class Switcher(Config cfg)
             if (after?.Gpu != null && DisplayConfig.GetScale(after.Gpu.Luid, after.SourceId) != s)
                 Log.Write($"  scale {s}% -> {DisplayConfig.SetScale(after.Gpu.Luid, after.SourceId, s)}");
         }
+        Log.Write($"  done in {clock.ElapsedMilliseconds} ms");
         return new(true, mode, "switched");
     }
 
-    /// <summary>Lowers the refresh on the current path one step at a time until the person sees the picture, and saves
-    /// that limit. Catches cables and ports that cannot carry a mode the driver still offers.</summary>
-    public async Task<int?> CalibrateAsync(ConfirmAsync confirm)
+    /// <summary>Raises the refresh on the current path one step at a time, from the safe 60 Hz, while the person
+    /// confirms each step, and saves the last one that showed a picture. It stops at the first step nobody confirms
+    /// (the screen went black) and goes back to the last good one, so the screen goes black at most once.
+    /// Catches cables and ports that cannot carry a mode the driver still offers.</summary>
+    public async Task<int?> CalibrateAsync(ConfirmAsync confirm, Action<int>? trying = null)
     {
         if (!await Busy.WaitAsync(0)) return null;
         try
@@ -146,22 +151,32 @@ public sealed class Switcher(Config cfg)
             var st = Status.Read(cfg, withVram: false);
             if (st.SharedOutput is not { Gpu: not null, Placement: not null } o) return null;
             var p = o.Placement;
-            foreach (int hz in Refresh.Candidates(Gdi.Modes(o.GdiName), p.Width, p.Height))
+            int? best = null;
+            foreach (int hz in Refresh.Ascending(Gdi.Modes(o.GdiName), p.Width, p.Height))
             {
+                trying?.Invoke(hz);
                 await Task.Run(() =>
                 {
                     Gdi.Stage(o.GdiName, p.X, p.Y, p.Width, p.Height, hz, o.IsPrimary);
                     Log.Write($"calibrate {o.Gpu.Name} at {hz} Hz -> {Gdi.ApplyStaged()}");
                     Thread.Sleep(1500);
                 });
-                if (await confirm(o.GdiName, cfg.ConfirmSeconds))
-                {
-                    cfg.MaxHzByGpu[o.Gpu.Key] = hz;
-                    cfg.Save();
-                    return hz;
-                }
+                if (!await confirm(o.GdiName, cfg.ConfirmSeconds)) break;
+                best = hz;
             }
-            return null;
+            // back to the last good step (or to where it was, if even the first one failed)
+            int final = best ?? p.Hz;
+            await Task.Run(() =>
+            {
+                Gdi.Stage(o.GdiName, p.X, p.Y, p.Width, p.Height, final, o.IsPrimary);
+                Log.Write($"calibrate {o.Gpu.Name}: keeps {final} Hz -> {Gdi.ApplyStaged()}");
+            });
+            if (best is int b)
+            {
+                cfg.MaxHzByGpu[o.Gpu.Key] = b;
+                cfg.Save();
+            }
+            return best;
         }
         finally
         {

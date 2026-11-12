@@ -37,6 +37,12 @@ public static class Screenshots
             }
             Save(ConfirmWindow.BuildContent(null, 12), Path.Combine(folder, $"confirm{suffix}.png"));
             SaveIcons(Path.Combine(folder, $"icons{suffix}.png"));
+            var proposal = Detect.Propose(readCapabilities: true);
+            for (int step = 0; step < 7; step++)
+            {
+                var wizard = new SetupWindow(null, proposal, cfg, firstRun: true);
+                Save(wizard.RenderStep(step), Path.Combine(folder, $"setup-{step + 1}{suffix}.png"));
+            }
             Console.WriteLine($"rendered {lang}");
         }
         app.Shutdown();

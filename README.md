@@ -53,6 +53,31 @@ The tray icon: <img src="docs/images/icons.png" height="22" alt="Purple AI icon,
 These images are rendered by the app's own panel code (`DuoGPU.exe render docs/images`). AI mode uses the live
 values from my PC; Game mode and the warning use values measured on the same PC.
 
+## The guided setup
+
+The first time you open DuoGPU, a seven-step setup walks you through everything. Each step says what it is going to
+do, why, and how long it takes, before you click anything.
+
+| 1. Welcome | 3. The inputs | 5. Test a path | 7. All set |
+|---|---|---|---|
+| <img src="docs/images/setup-1.png" width="230" alt="Welcome: what DuoGPU does and why nothing is permanent"> | <img src="docs/images/setup-3.png" width="230" alt="The inputs: the monitor says which input it shows; you pick the other one"> | <img src="docs/images/setup-5.png" width="230" alt="Test the AI mode path: a real switch, then the highest refresh rate"> | <img src="docs/images/setup-7.png" width="230" alt="All set: how the icon works and what was saved"> |
+
+The other steps show what DuoGPU found (your GPUs, the monitor with two cables), your preferences (scale, start with
+Windows, language) and the test of the Game mode path.
+
+## How long things take
+
+| Step | Time |
+|---|---|
+| One switch | about 5 s |
+| If nobody confirms (black screen) | 15 s, then it goes back by itself |
+| The refresh test of one path | about 1 to 2 min (each step up to 20 s) |
+| The whole first setup | about 3 to 5 min |
+| One guard check | a few milliseconds, every 5 s |
+
+**Everything in detail** (what happens in each mode, each step of a switch, every check and why, where files live):
+[docs/how-it-works.md](docs/how-it-works.md).
+
 ## How it works
 
 <p align="center">
@@ -105,7 +130,7 @@ your hardware, please [open an issue](https://github.com/ThalzeronLabs/duogpu/is
 3. The setup opens by itself:
    - it shows the monitor it found on both GPUs and picks the GPU with the most VRAM for AI;
    - it reads the input on screen now over DDC/CI; you pick the input where the other GPU's cable is;
-   - click **Save and test a switch**, then **Find the highest refresh for this path** once in each mode.
+   - steps 5 and 6 switch for real to each mode and find the highest refresh rate of each path, with you confirming.
 4. The icon lives in the tray (the `^` next to the clock). Drag it out to keep it always visible.
 
 ## Command line

@@ -93,8 +93,15 @@ public static class Refresh
         return allowed.OrderByDescending(m => (long)m.Width * m.Height).ThenByDescending(m => m.Hz).FirstOrDefault();
     }
 
-    /// <summary>The refresh rates to try during calibration, highest first.</summary>
-    public static List<int> Candidates(IEnumerable<Gdi.Mode> modes, int width, int height) =>
-        modes.Where(m => m.Width == width && m.Height == height && m.Hz > 1)
-            .Select(m => m.Hz).Distinct().OrderByDescending(h => h).ToList();
+    /// <summary>A refresh rate every cable and port carries at the monitor's native size.</summary>
+    public const int SafeHz = 60;
+
+    /// <summary>The refresh rates to try during calibration, lowest first, from the safe 60 Hz up.</summary>
+    public static List<int> Ascending(IEnumerable<Gdi.Mode> modes, int width, int height)
+    {
+        var all = modes.Where(m => m.Width == width && m.Height == height && m.Hz > 1)
+            .Select(m => m.Hz).Distinct().OrderBy(h => h).ToList();
+        var fromSafe = all.Where(h => h >= SafeHz).ToList();
+        return fromSafe.Count > 0 ? fromSafe : all;
+    }
 }

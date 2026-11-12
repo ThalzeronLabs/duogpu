@@ -71,8 +71,17 @@ public class RefreshTests
         Assert.Equal(new Gdi.Mode(5120, 1440, 100), Refresh.Best(Modes, 7680, 2160, 100));
 
     [Fact]
-    public void Calibration_tries_the_highest_rate_first() =>
-        Assert.Equal([120, 100, 60, 59], Refresh.Candidates(Modes, 5120, 1440));
+    public void Calibration_climbs_from_the_safe_60_Hz() =>
+        // 59 Hz is left out: it is below the safe start, and 60 already shows a picture on every cable
+        Assert.Equal([60, 100, 120], Refresh.Ascending(Modes, 5120, 1440));
+
+    [Fact]
+    public void A_monitor_with_only_low_rates_still_gets_steps() =>
+        Assert.Equal([30, 50], Refresh.Ascending([new(3840, 2160, 50), new(3840, 2160, 30)], 3840, 2160));
+
+    [Fact]
+    public void An_untested_path_starts_at_the_safe_rate() =>
+        Assert.Equal(new Gdi.Mode(5120, 1440, 60), Refresh.Best(Modes, 5120, 1440, Refresh.SafeHz));
 }
 
 public class ConfigTests
