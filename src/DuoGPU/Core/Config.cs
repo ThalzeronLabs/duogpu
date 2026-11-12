@@ -99,7 +99,10 @@ public static class Log
 {
     static readonly object Gate = new();
 
-    public static string FilePath =>
+    /// <summary>Where the log goes instead of the user's real one (the tests set it, so they never write there).</summary>
+    internal static string? PathOverride { get; set; }
+
+    public static string FilePath => PathOverride ??
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DuoGPU", "duogpu.log");
 
     public static void Write(string message)

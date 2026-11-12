@@ -131,6 +131,10 @@ public class ConfigTests
         Assert.Equal(ok, new Config { SharedMonitor = m, AiGpu = ai, OtherGpu = other }.IsComplete);
 
     [Fact]
+    public void The_tests_never_write_to_the_users_log() =>
+        Assert.StartsWith(Path.GetTempPath(), Log.FilePath);
+
+    [Fact]
     public void A_broken_file_starts_a_fresh_setup()
     {
         var path = Path.Combine(Path.GetTempPath(), $"duogpu-test-{Guid.NewGuid():N}.json");
