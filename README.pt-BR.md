@@ -101,7 +101,7 @@ Uma troca segue uma ordem testada no hardware de verdade:
    DuoGPU desfaz a troca, como o Windows faz depois de mudar a resolução.
 
 Um **guarda** confere as telas a cada 5 segundos. Ele conserta sozinho o que nunca apaga a tela (a escala, o Hz
-testado) e deixa o ícone âmbar, com o botão *Arrumar agora*, para o resto, como o monitor aparecendo duas vezes.
+testado e o tamanho, os Hz e a posição dos seus *outros* monitores, como você guardou) e deixa o ícone âmbar, com o botão *Arrumar agora*, para o resto, como o monitor aparecendo duas vezes.
 
 > **Por que um limite de Hz testado?** O driver pode oferecer um Hz que o cabo ou a porta não aguentam. No meu PC, o
 > Windows ofereceu 120 Hz no caminho DisplayPort da placa fraca, e a tela ficou preta a 75, 100 e 120 Hz; a 60 Hz deu
@@ -146,6 +146,8 @@ DuoGPU.exe status       o modo atual e as conferências do guarda
 DuoGPU.exe ai           o Modo IA
 DuoGPU.exe game         o Modo Jogo
 DuoGPU.exe toggle       o outro modo
+DuoGPU.exe fix          os consertos seguros do guarda, uma vez
+DuoGPU.exe remember     guarda os outros monitores como estão agora
   --no-confirm          sem o "Você está vendo?" (para scripts, só depois de uma troca testada)
 ```
 

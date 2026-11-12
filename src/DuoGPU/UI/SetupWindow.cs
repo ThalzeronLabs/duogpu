@@ -352,6 +352,7 @@ public sealed class SetupWindow : Window
         cfg.Scale = scaleIndex > 0 ? Native.DisplayConfig.ScaleSteps[scaleIndex - 1] : null;
         cfg.Language = languageIndex switch { 1 => "en", 2 => "pt-BR", _ => null };
         foreach (var kv in Saved.MaxHzByGpu) cfg.MaxHzByGpu.TryAdd(kv.Key, kv.Value);
+        cfg.OtherMonitors = OtherMonitors.Capture(Topology.Read(), cfg.SharedMonitor!);
         SetAutostart(autostart);
         app?.UseConfig(cfg);
     }

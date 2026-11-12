@@ -184,25 +184,30 @@ public sealed class Switcher(Config cfg)
         }
     }
 
-    /// <summary>The guard's repairs that never take the picture away: the scale and the best tested refresh.</summary>
+    /// <summary>The guard's repairs that never take the picture away: the scale and the best tested refresh of the
+    /// shared monitor, and the saved size, refresh and place of the other monitors (a state that already showed a
+    /// picture on that same cable).</summary>
     public bool FixSafe(Status st)
     {
-        if (IsBusy || st.SharedOutput is not { Gpu: not null, Placement: not null } o) return false;
-        bool changed = false;
+        if (IsBusy) return false;
+        bool changed = false, staged = false;
         foreach (var c in st.Checks.Where(c => !c.Ok && c.SafeToFix))
         {
-            if (c.Kind == CheckKind.Scale && cfg.Scale is int s)
+            if (c.Kind == CheckKind.Scale && cfg.Scale is int s && st.SharedOutput?.Gpu is { } g)
             {
-                changed |= DisplayConfig.SetScale(o.Gpu.Luid, o.SourceId, s);
+                changed |= DisplayConfig.SetScale(g.Luid, st.SharedOutput.SourceId, s);
             }
-            else if (c.Kind == CheckKind.Refresh && st.BestHz is int hz)
+            else if (c.Kind == CheckKind.Refresh && st.BestHz is int hz && st.SharedOutput is { Placement: { } p } o)
             {
-                var p = o.Placement;
-                Gdi.Stage(o.GdiName, p.X, p.Y, p.Width, p.Height, hz, o.IsPrimary);
-                changed |= Gdi.ApplyStaged() == 0;
+                staged |= Gdi.Stage(o.GdiName, p.X, p.Y, p.Width, p.Height, hz, o.IsPrimary) == 0;
+            }
+            else if (c.Kind is CheckKind.OtherMode or CheckKind.OtherPosition && c.Target != null && c.Want is { } w)
+            {
+                staged |= Gdi.Stage(c.Target, w.X, w.Y, w.Width, w.Height, w.Hz, false) == 0;
             }
         }
-        if (changed) Log.Write("guard: put back the scale or the refresh");
+        if (staged) changed |= Gdi.ApplyStaged() == 0;
+        if (changed) Log.Write("guard: put back " + string.Join(", ", st.Checks.Where(c => !c.Ok && c.SafeToFix).Select(c => c.Kind)));
         return changed;
     }
 }

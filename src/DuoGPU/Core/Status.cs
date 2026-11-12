@@ -2,9 +2,11 @@ using DuoGPU.Native;
 
 namespace DuoGPU.Core;
 
-public enum CheckKind { DuplicateMonitor, NoOutput, Scale, Refresh, Primary }
+public enum CheckKind { DuplicateMonitor, NoOutput, Scale, Refresh, Primary, OtherMissing, OtherMode, OtherPosition }
 
-public record Check(bool Ok, CheckKind Kind, string Detail, bool SafeToFix);
+/// <param name="Target">The output a safe fix acts on, when it is not the shared monitor.</param>
+/// <param name="Want">What that output should look like.</param>
+public record Check(bool Ok, CheckKind Kind, string Detail, bool SafeToFix, string? Target = null, SavedOutput? Want = null);
 
 /// <summary>The current mode and everything the guard checks, read every few seconds.</summary>
 public sealed class Status
@@ -62,6 +64,10 @@ public sealed class Status
                     checks.Add(new Check(p.Hz == b, CheckKind.Refresh, $"{p.Width}×{p.Height}|{p.Hz}|{b}", true));
             }
         }
+
+        // the monitors DuoGPU does not move: still on, same size, refresh and place as saved
+        if (cfg.OtherMonitors.Count > 0)
+            checks.AddRange(OtherMonitors.Compare(cfg.OtherMonitors, topo.Outputs, monitor, topo.MonitorName));
 
         ulong? used = null;
         if (withVram && ai != null) used = Gpus.VramInUse(ai.Luid);

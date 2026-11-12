@@ -101,7 +101,7 @@ A switch follows an order that was tested on real hardware:
    undoes the switch, just like Windows does after a resolution change.
 
 A **guard** checks the displays every 5 seconds. It quietly puts back what can never black out the screen (the scale,
-the tested refresh rate) and turns the icon amber, with a *Fix now* button, for anything else, such as the monitor
+the tested refresh rate, and the size, refresh rate and place of your *other* monitors as you saved them) and turns the icon amber, with a *Fix now* button, for anything else, such as the monitor
 showing up twice.
 
 > **Why a tested refresh limit?** The driver can offer a refresh rate that the cable or port cannot carry. On my PC,
@@ -147,6 +147,8 @@ DuoGPU.exe status       the current mode and the guard's checks
 DuoGPU.exe ai           AI mode
 DuoGPU.exe game         Game mode
 DuoGPU.exe toggle       the other mode
+DuoGPU.exe fix          the guard's safe repairs, once
+DuoGPU.exe remember     save the other monitors as they are now
   --no-confirm          skip "Can you see this?" (for scripts, only after a tested switch)
 ```
 

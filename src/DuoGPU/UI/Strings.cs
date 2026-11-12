@@ -69,9 +69,17 @@ public static partial class S
                 : T($"Scale {p[0]} (should be {p[1]})", $"Escala {p[0]} (o certo: {p[1]})"),
             CheckKind.Refresh => c.Ok ? T($"{p[0]} at {p[1]} Hz", $"{p[0]} a {p[1]} Hz")
                 : T($"{p[0]} at {p[1]} Hz (should be {p[2]} Hz)", $"{p[0]} a {p[1]} Hz (o certo: {p[2]} Hz)"),
+            CheckKind.OtherMissing => T($"{c.Detail} is off", $"O {c.Detail} está desligado"),
+            CheckKind.OtherMode => c.Ok ? T($"{p[0]}: {p[1]} at {p[2]} Hz", $"{p[0]}: {p[1]} a {p[2]} Hz")
+                : T($"{p[0]}: {p[1]} at {p[2]} Hz (should be {p[3]} at {p[4]} Hz)", $"{p[0]}: {p[1]} a {p[2]} Hz (o certo: {p[3]} a {p[4]} Hz)"),
+            CheckKind.OtherPosition => T($"{c.Detail} moved from its place", $"O {c.Detail} saiu do lugar"),
             _ => c.Detail,
         };
     }
+
+    public static string RememberOthers => T("Remember the other monitors as they are", "Lembrar as outras telas como estão");
+    public static string RememberedOthers(int n) => T($"Saved {n} other monitor(s): the guard keeps them this way.",
+        $"{n} outra(s) tela(s) guardada(s): o guarda mantém assim.");
 
     public static string OnceOnly(string monitor) => T($"{monitor} shows up once", $"O {monitor} aparece uma vez só");
 
@@ -83,14 +91,14 @@ public static partial class S
             $"""
             • Black screen after a switch: wait {seconds} s, DuoGPU goes back by itself. If it does not, press the INPUT button on {monitor} and pick {game} for Game mode or {ai} for AI mode. Then click "Fix now" here.
             • Amber icon (!): open this panel and click "Fix now".
-            • The scale or the refresh changed: DuoGPU puts them back within 5 s.
+            • The scale or the refresh changed, or another monitor moved: DuoGPU puts them back within 5 s. If you changed one on purpose, right-click the icon → "Remember the other monitors as they are".
             • The icon is gone: press Windows, type "DuoGPU" and press Enter.
             • The log: %LOCALAPPDATA%\DuoGPU\duogpu.log
             """,
             $"""
             • Tela preta depois de uma troca: espere {seconds} s, o DuoGPU volta sozinho. Se não voltar, aperte o botão de ENTRADA do {monitor} e escolha {game} para o Modo Jogo ou {ai} para o Modo IA. Depois, "Arrumar agora" aqui.
             • Ícone âmbar (!): abra este painel e clique em "Arrumar agora".
-            • A escala ou os Hz mudaram: o DuoGPU conserta sozinho em até 5 s.
+            • A escala ou os Hz mudaram, ou outra tela saiu do lugar: o DuoGPU conserta sozinho em até 5 s. Se você mudou uma de propósito, botão direito no ícone → "Lembrar as outras telas como estão".
             • O ícone sumiu: tecla Windows, digite "DuoGPU" e Enter.
             • O registro: %LOCALAPPDATA%\DuoGPU\duogpu.log
             """);

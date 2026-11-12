@@ -11,7 +11,7 @@
     <ApplicationIcon>Assets\duogpu.ico</ApplicationIcon>
     <AssemblyName>DuoGPU</AssemblyName>
     <RootNamespace>DuoGPU</RootNamespace>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <Product>DuoGPU</Product>
     <Company>Thalzeron Labs</Company>
     <Authors>Esdras Souza</Authors>

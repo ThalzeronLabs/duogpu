@@ -47,6 +47,7 @@ public sealed class TrayApp
         menu.Items.Add(S.OpenPanel, null, (_, _) => panel.ShowNearTray());
         var toggle = menu.Items.Add("", null, (_, _) => SwitchTo(Current.Mode == Mode.Ai ? Mode.Game : Mode.Ai));
         menu.Items.Add(S.FixNow, null, (_, _) => Fix());
+        menu.Items.Add(S.RememberOthers, null, (_, _) => RememberOthers());
         menu.Items.Add(S.Settings, null, (_, _) => OpenSetup());
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(S.Quit, null, (_, _) => Quit());
@@ -124,6 +125,16 @@ public sealed class TrayApp
     {
         var mode = Current.Mode != Mode.Unknown ? Current.Mode : Config.LastMode != Mode.Unknown ? Config.LastMode : Mode.Ai;
         _ = SwitchToAsync(mode, force: true);
+    }
+
+    /// <summary>Saves the other monitors as they are now, after the person changed one on purpose.</summary>
+    public void RememberOthers()
+    {
+        if (!Config.IsComplete) return;
+        Config.OtherMonitors = OtherMonitors.Capture(Topology.Read(), Config.SharedMonitor!);
+        Config.Save();
+        icon.ShowBalloonTip(4000, "DuoGPU", S.RememberedOthers(Config.OtherMonitors.Count), Forms.ToolTipIcon.Info);
+        _ = CheckAsync();
     }
 
     public void OpenSetup()
