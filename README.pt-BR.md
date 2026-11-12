@@ -38,9 +38,14 @@ Medido no meu PC (Radeon RX 9070 XT 16 GB + Radeon RX 7600 8 GB, um monitor de 5
 |---|---|---|
 | A VRAM em uso na placa forte | 2,93 GB | **0,42–0,50 GB** |
 | A carga 3D de outros programas na placa forte | até 45% (o compositor do Windows, `dwm.exe`) | **0%** |
+| Um modelo de 27B (Q4_K_M, cache K/V em q8), a escrita | 53,3 tokens/s | 53,0 tokens/s (52,9 · 53,0 · 53,3) |
+| O mesmo modelo, a leitura do prompt | 7,6 s | 7,4 s |
 
 São cerca de **2,5 GB a mais de VRAM** para o modelo sem mudar mais nada: dá para uma quantização maior ou um contexto
-mais longo.
+mais longo. **Não é um ganho de velocidade:** com este modelo de 27B, a escrita ficou igual (dentro do ruído) e o
+prompt ficou uns 3% mais rápido. Esse modelo (uns 16,5 GB com o cache) não cabe inteiro na placa forte, e a parte que
+vai para a fraca agora divide a placa com os monitores; um modelo que caiba inteiro na forte pode se comportar
+diferente. O que o DuoGPU garante é a memória e uma placa forte que nenhum outro programa usa.
 
 ## As telas
 

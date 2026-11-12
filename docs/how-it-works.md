@@ -21,6 +21,7 @@ facts in sync: which GPU output is on in Windows, and which input the monitor sh
 | The big GPU drives | **no display at all** | the shared monitor |
 | VRAM in use on the big GPU, idle (measured on my PC) | **0.42–0.50 GB** | 2.93 GB |
 | Load on the big GPU from the desktop (`dwm.exe`, measured) | **0%** | up to 45% |
+| A 27B model (Q4_K_M, K/V q8), generation, 3 runs (measured) | 53.0 tokens/s | 53.3 tokens/s |
 | Refresh rate of the shared monitor | the tested limit of the small GPU's path (60 Hz on my PC) | the tested limit of the big GPU's path (120 Hz on my PC) |
 | Games | still run on the big GPU if you choose it in Windows' graphics settings, with a frame copy over PCIe | render and display on the same GPU, no copy |
 | Your other monitors | stay where they are | stay where they are |
@@ -29,6 +30,13 @@ facts in sync: which GPU output is on in Windows, and which input the monitor sh
 **Why the VRAM drops so much:** every display a GPU drives needs framebuffers, and the Windows compositor
 (`dwm.exe`) keeps the whole desktop of that display in the GPU's memory. Browsers and chat apps add their own
 GPU-accelerated surfaces. When the big GPU drives no display, none of that lives there.
+
+**Why the speed does not change much:** generating text is limited by how fast the GPU reads the model's weights
+from its own memory, and an idle desktop barely uses that bandwidth. With a 27B model on my PC, generation stayed at
+53 tokens/s in both modes (within the noise) and the prompt got about 3% faster. That model does not fit in the big
+GPU alone, and the part that spills to the small GPU now shares it with the monitors, so a model that fits entirely
+on the big GPU may behave differently. The sure gain is the memory: about 2.5 GB more for weights or context, and a
+big GPU no other program touches.
 
 ## 3. Inside a switch, step by step
 
