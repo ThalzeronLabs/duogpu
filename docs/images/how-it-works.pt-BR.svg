@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 470" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect width="960" height="470" rx="18" fill="#14141B"/>
+  <!-- the PC -->
+  <rect x="40" y="70" width="270" height="250" rx="14" fill="#1E1E28" stroke="#2C2C3A" stroke-width="2"/>
+  <text x="62" y="102" fill="#9A9AB0" font-size="15">O seu PC</text>
+  <rect x="62" y="125" width="226" height="70" rx="10" fill="#14141B" stroke="#22C55E" stroke-width="2.5"/>
+  <text x="80" y="166" fill="#F4F4F8" font-size="16" font-weight="600">Placa forte · mais VRAM</text>
+  <rect x="62" y="220" width="226" height="70" rx="10" fill="#14141B" stroke="#8B5CF6" stroke-width="2.5"/>
+  <text x="80" y="261" fill="#F4F4F8" font-size="16" font-weight="600">Placa fraca</text>
+  <!-- the monitor -->
+  <rect x="420" y="60" width="500" height="160" rx="14" fill="#1E1E28" stroke="#F4F4F8" stroke-width="2.5"/>
+  <text x="670" y="132" fill="#F4F4F8" font-size="18" font-weight="600" text-anchor="middle">O seu monitor principal</text>
+  <!-- the cables, drawn over the monitor and under the input badges -->
+  <path d="M288 160 C 380 160, 360 292, 470 292 L 540 292 Q 568 292 568 252" fill="none" stroke="#22C55E" stroke-width="5" stroke-linecap="round"/>
+  <path d="M288 255 C 360 255, 370 322, 470 322 L 675 322 Q 703 322 703 252" fill="none" stroke="#8B5CF6" stroke-width="5" stroke-linecap="round"/>
+  <path d="M288 280 C 330 330, 380 362, 470 368" fill="none" stroke="#3A3A4C" stroke-width="3" stroke-dasharray="6 7"/>
+  <rect x="525" y="222" width="86" height="28" rx="7" fill="#22C55E"/>
+  <text x="568" y="241" fill="#FFFFFF" font-size="13" font-weight="600" text-anchor="middle">Entrada B</text>
+  <rect x="660" y="222" width="86" height="28" rx="7" fill="#8B5CF6"/>
+  <text x="703" y="241" fill="#FFFFFF" font-size="13" font-weight="600" text-anchor="middle">Entrada A</text>
+  <text x="480" y="373" fill="#6E6E84" font-size="13">Os outros monitores ficam na placa fraca</text>
+  <!-- the two modes -->
+  <rect x="40" y="400" width="12" height="12" rx="3" fill="#8B5CF6"/>
+  <text x="60" y="411" fill="#F4F4F8" font-size="14"><tspan font-weight="700">Modo IA.</tspan> <tspan fill="#9A9AB0">O monitor mostra a entrada A. A placa forte não mostra tela nenhuma: a VRAM toda fica para o modelo.</tspan></text>
+  <rect x="40" y="426" width="12" height="12" rx="3" fill="#22C55E"/>
+  <text x="60" y="437" fill="#F4F4F8" font-size="14"><tspan font-weight="700">Modo Jogo.</tspan> <tspan fill="#9A9AB0">O monitor mostra a entrada B. O jogo roda e aparece na placa forte, sem cópia pelo PCIe.</tspan></text>
+  <text x="40" y="38" fill="#9A9AB0" font-size="14">O DuoGPU troca a entrada pelo próprio cabo (DDC/CI) e liga ou desliga a saída de cada placa no Windows.</text>
+</svg>

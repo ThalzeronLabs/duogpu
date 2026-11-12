@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\duogpu.ico</ApplicationIcon>
+    <AssemblyName>DuoGPU</AssemblyName>
+    <RootNamespace>DuoGPU</RootNamespace>
+    <Version>0.1.0</Version>
+    <Product>DuoGPU</Product>
+    <Company>Thalzeron Labs</Company>
+    <Authors>Esdras Souza</Authors>
+    <Copyright>© 2026 Esdras Souza (Thalzeron Labs)</Copyright>
+    <Description>One click moves your main monitor between two GPUs, so the big one stays free for local AI.</Description>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <!-- WPF draws the windows and reads its DPI awareness from app.manifest (PerMonitorV2); WinForms only hosts the
+         tray icon, so its "set DPI in code" rule does not apply here. -->
+    <NoWarn>$(NoWarn);WFO0003</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\duogpu.ico" />
+    <InternalsVisibleTo Include="DuoGPU.Tests" />
+    <!-- WPF draws the windows; WinForms only gives the tray icon. Keep their names apart. -->
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+  </ItemGroup>
+
+</Project>

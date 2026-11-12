@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Test
+        run: dotnet test tests/DuoGPU.Tests -c Release
+      - name: Build both flavors
+        shell: pwsh
+        run: |
+          $v = '${{ github.ref_name }}'
+          dotnet publish src/DuoGPU -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o out/self
+          dotnet publish src/DuoGPU -c Release -r win-x64 --no-self-contained -p:PublishSingleFile=true -o out/framework
+          New-Item -ItemType Directory dist | Out-Null
+          Compress-Archive -Path out/self/DuoGPU.exe, LICENSE, README.md -DestinationPath "dist/DuoGPU-$v-win-x64.zip"
+          Compress-Archive -Path out/framework/DuoGPU.exe, LICENSE, README.md -DestinationPath "dist/DuoGPU-$v-win-x64-framework.zip"
+          Get-ChildItem dist/*.zip | ForEach-Object { "$((Get-FileHash $_ -Algorithm SHA256).Hash.ToLower())  $($_.Name)" } | Set-Content dist/SHA256SUMS.txt
+          Get-Content dist/SHA256SUMS.txt
+      - name: Publish the release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $v = '${{ github.ref_name }}'
+          $notes = (Get-Content CHANGELOG.md -Raw) -split "(?m)^## " | Where-Object { $_ -like "$($v.TrimStart('v'))*" } | Select-Object -First 1
+          $sums = Get-Content dist/SHA256SUMS.txt -Raw
+          "## $notes`n### SHA-256`n``````text`n$sums``````" | Set-Content notes.md
+          gh release create $v dist/*.zip dist/SHA256SUMS.txt --title "DuoGPU $v" --notes-file notes.md
