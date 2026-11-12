@@ -69,6 +69,7 @@ the same number Task Manager shows.
 | The shared monitor is on through **some** GPU | A cable unplugged or a driver reset can leave it off. | Amber icon and **Fix now**. |
 | The **scale** is the one you chose | Windows resets it when the cable changes. | Fixed by itself (it never turns a screen off). |
 | The **refresh rate** is the best one under the tested limit | Windows or a game can leave the monitor at a lower rate; a higher one could turn the screen black. | Fixed by itself, **only on a path whose limit was tested** with you watching. |
+| Your **other monitors** keep the size, refresh rate and place you saved | A switch, a driver reset or a game can drop a monitor to 60 Hz or move it. | Fixed by itself, back to the saved state (it already showed a picture on that cable). A monitor that is off turns the icon amber. If you change one on purpose, right-click the icon → *Remember the other monitors as they are* (or `DuoGPU.exe remember`). |
 
 The guard reads the VRAM in use on the big GPU at the same time, for the panel.
 

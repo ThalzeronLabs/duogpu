@@ -70,10 +70,12 @@ public static class Screenshots
         string size = $"{p.Width}×{p.Height}";
         int aiHz = cfg.MaxHzFor(other.Key) ?? p.Hz, gameHz = cfg.MaxHzFor(ai.Key) ?? p.Hz;
         string sc = $"{live.Scale}%";
+        var others = live.Checks.Where(c => c.Kind == CheckKind.OtherMode && c.Ok).ToList();
         List<Check> Ok(int hz) =>
         [
             new(true, CheckKind.Scale, $"{sc}|{sc}", true),
             new(true, CheckKind.Refresh, $"{size}|{hz}|{hz}", true),
+            .. others,
         ];
         const ulong gb = 1UL << 30;
         // AI mode: live from this PC when it is in AI mode, otherwise the value measured on 12/11/2026 (0.44 GB)
@@ -86,6 +88,7 @@ public static class Screenshots
         [
             new(false, CheckKind.Scale, $"100%|{sc}", true),
             new(true, CheckKind.Refresh, $"{size}|{aiHz}|{aiHz}", true),
+            .. others,
         ]), false);
         yield return ("help", With(Mode.Ai, other, aiHz, aiVram, Ok(aiHz)), true);
     }

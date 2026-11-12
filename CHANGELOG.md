@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 (2026-11-12)
+
+- The guard now keeps the **other monitors** as you saved them: their size, refresh rate and place. A monitor dropped
+  to 60 Hz or moved is put back by itself; a monitor that is off turns the icon amber.
+- The setup saves the other monitors; *Remember the other monitors as they are* (tray menu) and `DuoGPU.exe remember`
+  save them again after a change you made on purpose.
+- `DuoGPU.exe fix` runs the guard's safe repairs once, for scripts.
+
 ## 0.1.0 (2026-11-12)
 
 The first public version.

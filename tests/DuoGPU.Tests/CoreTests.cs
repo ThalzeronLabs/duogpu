@@ -145,3 +145,80 @@ public class ConfigTests
         }
     }
 }
+
+public class OtherMonitorsTests
+{
+    const string Shared = "VIE0490";
+
+    static OutputInfo Out(string gdi, string monitor, int x, int y, int w = 1920, int h = 1080, int hz = 165, bool active = true) =>
+        new(gdi, null, 0, active, [monitor], active ? new Gdi.Placement(x, y, w, h, hz) : null);
+
+    static readonly OutputInfo[] Desk =
+    [
+        Out(@"\.\DISPLAY29", Shared, 0, 0, 5120, 1440, 60),
+        Out(@"\.\DISPLAY28", "MCR3150", 640, -1080),
+        Out(@"\.\DISPLAY30", "CJH3150", 2560, -1080),
+    ];
+
+    static Dictionary<string, SavedOutput> Saved() => new()
+    {
+        ["MCR3150"] = new(640, -1080, 1920, 1080, 165),
+        ["CJH3150"] = new(2560, -1080, 1920, 1080, 165),
+    };
+
+    static string Name(string id) => id;
+
+    [Fact]
+    public void Everything_in_place_gives_one_ok_line_per_monitor()
+    {
+        var checks = OtherMonitors.Compare(Saved(), Desk, Shared, Name);
+        Assert.Equal(2, checks.Count);
+        Assert.All(checks, c => Assert.True(c.Ok));
+        Assert.All(checks, c => Assert.Equal(CheckKind.OtherMode, c.Kind));
+    }
+
+    [Fact]
+    public void The_shared_monitor_is_never_one_of_the_others() =>
+        Assert.DoesNotContain(OtherMonitors.Compare(Saved(), Desk, Shared, Name), c => c.Detail.Contains(Shared));
+
+    [Fact]
+    public void A_lower_refresh_is_found_and_can_be_fixed()
+    {
+        var desk = Desk.ToArray();
+        desk[1] = Out(@"\.\DISPLAY28", "MCR3150", 640, -1080, hz: 60);
+        var bad = Assert.Single(OtherMonitors.Compare(Saved(), desk, Shared, Name), c => !c.Ok);
+        Assert.Equal(CheckKind.OtherMode, bad.Kind);
+        Assert.True(bad.SafeToFix);
+        Assert.Equal(@"\.\DISPLAY28", bad.Target);
+        Assert.Equal(165, bad.Want!.Hz);
+    }
+
+    [Fact]
+    public void A_moved_monitor_is_found_and_can_be_fixed()
+    {
+        var desk = Desk.ToArray();
+        desk[2] = Out(@"\.\DISPLAY30", "CJH3150", 5120, 0);
+        var bad = Assert.Single(OtherMonitors.Compare(Saved(), desk, Shared, Name), c => !c.Ok);
+        Assert.Equal(CheckKind.OtherPosition, bad.Kind);
+        Assert.Equal(new SavedOutput(2560, -1080, 1920, 1080, 165), bad.Want);
+    }
+
+    [Fact]
+    public void A_monitor_that_is_off_needs_the_person()
+    {
+        var desk = new[] { Desk[0], Desk[1], Out(@"\.\DISPLAY30", "CJH3150", 0, 0, active: false) };
+        var bad = Assert.Single(OtherMonitors.Compare(Saved(), desk, Shared, Name), c => !c.Ok);
+        Assert.Equal(CheckKind.OtherMissing, bad.Kind);
+        Assert.False(bad.SafeToFix);
+    }
+
+    [Fact]
+    public void Two_identical_models_are_kept_apart()
+    {
+        var desk = new[] { Desk[0], Out(@"\.\DISPLAY1", "DEL4141", 1920, -1080), Out(@"\.\DISPLAY2", "DEL4141", -1920, 0) };
+        var topo = new Topology { Gpus = [], Outputs = desk, MonitorNames = new Dictionary<string, string>() };
+        var saved = OtherMonitors.Capture(topo, Shared);
+        Assert.Equal(["DEL4141", "DEL4141#2"], saved.Keys.Order().ToArray());
+        Assert.Equal(-1920, saved["DEL4141"].X); // ordered left to right
+    }
+}

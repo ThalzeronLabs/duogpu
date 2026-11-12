@@ -34,6 +34,9 @@ public sealed class Config
     /// <summary>The scale to keep on the shared monitor (Windows resets it when the cable changes). Null = leave it.</summary>
     public int? Scale { get; set; }
 
+    /// <summary>The monitors DuoGPU does not move, as they were saved: the guard keeps them that way.</summary>
+    public Dictionary<string, SavedOutput> OtherMonitors { get; set; } = [];
+
     public int ConfirmSeconds { get; set; } = 15;
 
     /// <summary>The guard puts back the scale and the best refresh by itself.</summary>

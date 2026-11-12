@@ -69,6 +69,7 @@ que o Gerenciador de Tarefas mostra.
 | O monitor compartilhado está ligado por **alguma** placa | Um cabo solto ou um reinício do driver podem deixar ele desligado. | O ícone fica âmbar, com o **Arrumar agora**. |
 | A **escala** é a que você escolheu | O Windows zera a escala quando o cabo muda. | Ele conserta sozinho (isso nunca apaga uma tela). |
 | Os **Hz** são o melhor valor dentro do limite testado | O Windows ou um jogo podem deixar o monitor num Hz menor; um maior pode apagar a tela. | Ele conserta sozinho, **só num caminho cujo limite foi testado** com você olhando. |
+| Os seus **outros monitores** mantêm o tamanho, os Hz e a posição que você guardou | Uma troca, um reinício do driver ou um jogo podem baixar um monitor para 60 Hz ou mudar ele de lugar. | Ele conserta sozinho, de volta ao estado guardado (que já deu imagem naquele cabo). Um monitor desligado deixa o ícone âmbar. Se você mudar um de propósito, botão direito no ícone → *Lembrar as outras telas como estão* (ou `DuoGPU.exe remember`). |
 
 O guarda lê ao mesmo tempo a VRAM em uso na placa forte, para o painel.
 

@@ -20,6 +20,8 @@ public static class Program
           DuoGPU.exe ai           AI mode: the shared monitor on the smaller GPU
           DuoGPU.exe game         Game mode: the shared monitor on the big GPU
           DuoGPU.exe toggle       the other mode
+          DuoGPU.exe fix          the guard's safe repairs, once (scale, tested refresh, other monitors)
+          DuoGPU.exe remember     save the other monitors as they are now (the guard keeps them that way)
             --no-confirm          skip the "Can you see this?" window (scripts; use only after a tested switch)
         """;
 
@@ -84,6 +86,24 @@ public static class Program
                     : new Switcher(cfg).SwitchAsync(mode, null).GetAwaiter().GetResult();
                 Console.WriteLine($"{result.Mode}: {result.Message}");
                 return result.Ok ? 0 : 1;
+            case "fix": // the guard's safe repairs, once
+                var before = Status.Read(cfg, withVram: false);
+                bool fixedSomething = new Switcher(cfg).FixSafe(before);
+                var after = Status.Read(cfg, withVram: false);
+                Console.WriteLine(fixedSomething ? "Put back what was safe to fix." : "Nothing safe to fix.");
+                foreach (var c in after.Checks) Console.WriteLine($"  {(c.Ok ? "ok" : "!!")} {c.Kind} {c.Detail}");
+                return after.Checks.All(c => c.Ok) ? 0 : 1;
+            case "remember": // the other monitors, as they are now
+                if (!cfg.IsComplete)
+                {
+                    Console.Error.WriteLine("Run DuoGPU once to set it up first.");
+                    return 2;
+                }
+                cfg.OtherMonitors = OtherMonitors.Capture(Topology.Read(), cfg.SharedMonitor!);
+                cfg.Save();
+                foreach (var (k, v) in cfg.OtherMonitors) Console.WriteLine($"  {k}: {v.Width}x{v.Height}@{v.Hz} at ({v.X},{v.Y})");
+                Console.WriteLine($"Saved {cfg.OtherMonitors.Count} other monitor(s).");
+                return 0;
             case "render": // the README images, from the real panel code
                 return UI.Screenshots.Render(args.Skip(1).FirstOrDefault(a => !a.StartsWith("--")) ?? "docs/images");
             default:
