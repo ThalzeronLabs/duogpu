@@ -88,8 +88,8 @@ O código das telas precisa de monitores e placas de verdade, então ele é test
 
 | Etapa | Tempo | De onde vem |
 |---|---|---|
-| Uma troca (entrada + saídas + escala) | uns 5 s | medido no meu PC |
-| A janela de confirmação, se ninguém clicar | 15 s, e a troca é desfeita (uns 5 s a mais) | a configuração `ConfirmSeconds` |
+| Uma troca (entrada + saídas + escala) | uns 10 s (9,8 s e 9,9 s) | medido com o DuoGPU 0.1.0 no meu PC, nos dois sentidos, em 12/11/2026 |
+| A janela de confirmação, se ninguém clicar | 15 s, e a troca é desfeita (uns 10 s a mais) | a configuração `ConfirmSeconds` |
 | Um degrau de Hz na configuração | uns 2 s se você confirmar rápido, até uns 20 s no degrau que apaga | 1,5 s para aplicar + o seu clique ou os 15 s de espera |
 | O teste de Hz de um caminho | uns 1 a 2 minutos | estimativa: 2 a 4 degraus por caminho |
 | A configuração guiada inteira | uns 3 a 5 minutos | estimativa |

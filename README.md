@@ -69,7 +69,7 @@ Windows, language) and the test of the Game mode path.
 
 | Step | Time |
 |---|---|
-| One switch | about 5 s |
+| One switch | about 10 s (measured: 9.8 s and 9.9 s) |
 | If nobody confirms (black screen) | 15 s, then it goes back by itself |
 | The refresh test of one path | about 1 to 2 min (each step up to 20 s) |
 | The whole first setup | about 3 to 5 min |
@@ -116,7 +116,7 @@ network.
 - **DDC/CI turned on** in the monitor's menu (most monitors ship with it on). Without it DuoGPU still works: it asks
   you to press the monitor's input button.
 
-**Tested on:** Radeon RX 9070 XT + Radeon RX 7600 with a 5120×1440 DisplayPort monitor. If it works (or not) on
+**Tested on:** Radeon RX 9070 XT + Radeon RX 7600 with a 5120×1440 DisplayPort monitor: a switch in each direction, confirmed on screen, about 10 s each (12 Nov 2026). If it works (or not) on
 your hardware, please [open an issue](https://github.com/ThalzeronLabs/duogpu/issues) with the output of
 `DuoGPU.exe detect`: it is the fastest way to grow the list.
 

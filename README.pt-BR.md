@@ -69,7 +69,7 @@ escala, iniciar com o Windows, o idioma) e o teste do caminho do Modo Jogo.
 
 | Etapa | Tempo |
 |---|---|
-| Uma troca | uns 5 s |
+| Uma troca | uns 10 s (medido: 9,8 s e 9,9 s) |
 | Se ninguém confirmar (tela preta) | 15 s, e ele volta sozinho |
 | O teste de Hz de um caminho | uns 1 a 2 min (cada degrau até 20 s) |
 | A primeira configuração inteira | uns 3 a 5 min |
@@ -115,7 +115,7 @@ internet.
 - **O DDC/CI ligado** no menu do monitor (a maioria já vem com ele ligado). Sem ele, o DuoGPU funciona assim mesmo: ele
   pede para você apertar o botão de entrada do monitor.
 
-**Testado em:** Radeon RX 9070 XT + Radeon RX 7600, com um monitor DisplayPort de 5120×1440. Se funcionar (ou não) no
+**Testado em:** Radeon RX 9070 XT + Radeon RX 7600, com um monitor DisplayPort de 5120×1440: uma troca em cada sentido, confirmada na tela, uns 10 s cada (12/11/2026). Se funcionar (ou não) no
 seu hardware, [abra uma issue](https://github.com/ThalzeronLabs/duogpu/issues) com a saída do `DuoGPU.exe detect`: é
 o jeito mais rápido de aumentar a lista.
 

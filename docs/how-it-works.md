@@ -88,8 +88,8 @@ README says which hardware).
 
 | Step | Time | Source |
 |---|---|---|
-| One switch (input + outputs + scale) | about 5 s | measured on my PC |
-| The confirmation window, if nobody clicks | 15 s, then the switch is undone (about 5 s more) | the setting `ConfirmSeconds` |
+| One switch (input + outputs + scale) | about 10 s (9.8 s and 9.9 s) | measured with DuoGPU 0.1.0 on my PC, both directions, 12 Nov 2026 |
+| The confirmation window, if nobody clicks | 15 s, then the switch is undone (about 10 s more) | the setting `ConfirmSeconds` |
 | One refresh step during the setup | about 2 s if you confirm quickly, up to about 20 s for the step that goes black | 1.5 s to apply + your click or the 15 s timeout |
 | The refresh test of one path | about 1 to 2 minutes | estimate: 2 to 4 steps per path |
 | The whole guided setup | about 3 to 5 minutes | estimate |

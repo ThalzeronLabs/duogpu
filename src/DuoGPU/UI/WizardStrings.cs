@@ -75,13 +75,13 @@ public static partial class S
     public static string PathWhat => T(
         """
         Now DuoGPU switches for real. What happens:
-        1.  The monitor goes dark for about 5 seconds while the input and the outputs change.
+        1.  The monitor goes dark for about 10 seconds while the input and the outputs change.
         2.  A window appears in the middle of the monitor: "Can you see this window?". Click "Yes, keep it".
         3.  If the screen stays black, don't touch anything: after 15 seconds it goes back by itself.
         """,
         """
         Agora o DuoGPU troca de verdade. O que acontece:
-        1.  O monitor apaga por uns 5 segundos enquanto a entrada e as saídas mudam.
+        1.  O monitor apaga por uns 10 segundos enquanto a entrada e as saídas mudam.
         2.  Aparece no meio do monitor a janela "Você está vendo esta janela?". Clique em "Sim, manter".
         3.  Se a tela continuar preta, não mexa em nada: em 15 segundos ela volta sozinha.
         """);
@@ -89,8 +89,8 @@ public static partial class S
         "Then find the highest refresh rate this path can carry. Why: the driver can offer a rate that the cable or the port cannot carry (for example 120 Hz offered and a black screen above 60 Hz). DuoGPU starts at 60 Hz, which every cable carries, and goes up one step at a time while you confirm each one. At the first black screen it stops and keeps the last good rate, so the screen goes black at most once.",
         "Depois, ache o maior Hz que este caminho aguenta. Por quê: o driver pode oferecer um Hz que o cabo ou a porta não aguentam (por exemplo, 120 Hz oferecidos e tela preta acima de 60 Hz). O DuoGPU começa em 60 Hz, que todo cabo aguenta, e sobe um degrau por vez, com você confirmando cada um. Na primeira tela preta ele para e fica com o último Hz bom, então a tela fica preta no máximo uma vez.");
     public static string PathTime => T(
-        "The switch: about 5 s. Each refresh step: up to 20 s. This step: about 1 to 2 minutes.",
-        "A troca: uns 5 s. Cada degrau de Hz: até 20 s. Este passo: uns 1 a 2 minutos.");
+        "The switch: about 10 s. Each refresh step: up to 20 s. This step: about 1 to 2 minutes.",
+        "A troca: uns 10 s. Cada degrau de Hz: até 20 s. Este passo: uns 1 a 2 minutos.");
     public static string SwitchNow(Mode mode) => T($"1.  Switch to {ModeShort(mode)}", $"1.  Trocar para o {ModeShort(mode)}");
     public static string AlreadyIn(Mode mode) => T($"1.  Already in {ModeShort(mode)}  ✓", $"1.  Já está no {ModeShort(mode)}  ✓");
     public static string FindHz => T("2.  Find the highest refresh", "2.  Achar o maior Hz");
@@ -107,7 +107,7 @@ public static partial class S
         The DuoGPU icon lives in the tray, next to the clock (click ^ if it is hidden; drag it out to keep it visible):
         •  purple "AI" = AI mode   •  green gamepad = Game mode   •  amber "!" = something to fix
 
-        Click the icon for the panel: the mode, the free VRAM, the checks and the one button that switches. Right-click for the menu. Every switch takes about 5 seconds and always asks for your confirmation.
+        Click the icon for the panel: the mode, the free VRAM, the checks and the one button that switches. Right-click for the menu. Every switch takes about 10 seconds and always asks for your confirmation.
 
         You can open this setup again from the panel ("Setup…").
         """,
@@ -115,7 +115,7 @@ public static partial class S
         O ícone do DuoGPU fica na bandeja, perto do relógio (clique na setinha ^ se ele estiver escondido; arraste para fora para deixar à vista):
         •  "IA" roxo = Modo IA   •  controle verde = Modo Jogo   •  "!" âmbar = algo para arrumar
 
-        Clique no ícone para abrir o painel: o modo, a VRAM livre, as conferências e o botão único que troca. O botão direito abre o menu. Cada troca leva uns 5 segundos e sempre pede a sua confirmação.
+        Clique no ícone para abrir o painel: o modo, a VRAM livre, as conferências e o botão único que troca. O botão direito abre o menu. Cada troca leva uns 10 segundos e sempre pede a sua confirmação.
 
         Dá para abrir esta configuração de novo pelo painel ("Configurar…").
         """);
