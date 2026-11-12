@@ -21,6 +21,7 @@ DuoGPU mantém essas duas coisas combinadas: qual saída de placa está ligada n
 | A placa forte mostra | **tela nenhuma** | o monitor compartilhado |
 | A VRAM em uso na placa forte, parada (medido no meu PC) | **0,42–0,50 GB** | 2,93 GB |
 | A carga da área de trabalho na placa forte (`dwm.exe`, medido) | **0%** | até 45% |
+| Um modelo de 27B (Q4_K_M, K/V em q8), a escrita, 3 rodadas (medido) | 53,0 tokens/s | 53,3 tokens/s |
 | Os Hz do monitor compartilhado | o limite testado do caminho da placa fraca (60 Hz no meu PC) | o limite testado do caminho da placa forte (120 Hz no meu PC) |
 | Os jogos | rodam na placa forte se você escolher nas configurações de elementos gráficos do Windows, com cópia dos quadros pelo PCIe | são desenhados e mostrados na mesma placa, sem cópia |
 | Os outros monitores | ficam onde estão | ficam onde estão |
@@ -29,6 +30,13 @@ DuoGPU mantém essas duas coisas combinadas: qual saída de placa está ligada n
 **Por que a VRAM cai tanto:** cada tela que uma placa mostra precisa de buffers de imagem, e o compositor do Windows
 (o `dwm.exe`) guarda a área de trabalho inteira daquela tela na memória da placa. O navegador e os apps de conversa
 somam as superfícies deles, aceleradas pela placa. Quando a placa forte não mostra tela nenhuma, nada disso fica nela.
+
+**Por que a velocidade quase não muda:** gerar texto depende de quão rápido a placa lê os pesos do modelo na própria
+memória, e uma área de trabalho parada quase não usa essa banda. Com um modelo de 27B no meu PC, a escrita ficou em 53
+tokens/s nos dois modos (dentro do ruído) e o prompt ficou uns 3% mais rápido. Esse modelo não cabe inteiro na placa
+forte, e a parte que vai para a fraca agora divide a placa com os monitores; um modelo que caiba inteiro na forte pode
+se comportar diferente. O ganho certo é a memória: uns 2,5 GB a mais para os pesos ou o contexto, e uma placa forte
+que nenhum outro programa usa.
 
 ## 3. Por dentro de uma troca, passo a passo
 

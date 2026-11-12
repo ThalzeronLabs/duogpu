@@ -38,9 +38,14 @@ Measured on my PC (Radeon RX 9070 XT 16 GB + Radeon RX 7600 8 GB, a 5120×1440 m
 |---|---|---|
 | VRAM in use on the big GPU | 2.93 GB | **0.42–0.50 GB** |
 | 3D load on the big GPU from other programs | up to 45% (the Windows compositor, `dwm.exe`) | **0%** |
+| A 27B model (Q4_K_M, K/V cache q8), generation | 53.3 tokens/s | 53.0 tokens/s (52.9 · 53.0 · 53.3) |
+| The same model, prompt processing | 7.6 s | 7.4 s |
 
 That is about **2.5 GB more VRAM** for the model with nothing else changed, enough for a bigger quantization or a
-longer context.
+longer context. **It is not a speed boost:** with this 27B model, generation stayed the same (within the noise) and
+the prompt was about 3% faster. That model (about 16.5 GB with its cache) does not fit in the big GPU alone, and the
+part that spills to the small one now shares it with the monitors, so a model that fits entirely on the big GPU may
+behave differently. What DuoGPU gives you for sure is the memory and a big GPU no other program touches.
 
 ## Screenshots
 
