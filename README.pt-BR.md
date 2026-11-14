@@ -195,4 +195,4 @@ celular).
 
 ## Licença
 
-Apache-2.0 © Esdras Souza (Thalzeron Labs). Veja a [LICENSE](LICENSE).
+Apache-2.0 © Esdras Souza (Thalzeron Labs). Veja a [LICENSE](LICENSE). As versões para baixar levam dentro o runtime do .NET (MIT); os avisos dele estão em [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt).
