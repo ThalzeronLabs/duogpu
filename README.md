@@ -195,4 +195,4 @@ projects under [Thalzeron Labs](https://thalzeronlabs.github.io/Site-Oficial/). 
 
 ## License
 
-Apache-2.0 © Esdras Souza (Thalzeron Labs). See [LICENSE](LICENSE).
+Apache-2.0 © Esdras Souza (Thalzeron Labs). See [LICENSE](LICENSE). The release builds bundle the .NET runtime (MIT); its notices are in [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt).
